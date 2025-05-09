@@ -3,31 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Intento de botones</title>
+  <title>Lista de productos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
 </head>
 <body>
   <div class="container mt-4">
-    <h2 class="mb-3">Lista de personas</h2>
-    <button class="btn btn-outline-info mb-3" id="btnAgregar">Agregar una nueva persona a la lista</button>
-
+    <h2 class="mb-3">Lista de productos</h2>
+    <button class="btn btn-outline-info mb-3" id="btnAgregar">Agregar un nuevo producto</button>
 
     <table class="table" id="miTabla">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombre y Apellido</th>
-          <th>Teléfono</th>
-          <th>Correo electronico</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">1</th>
-          <td>Nicol Ligorria</td>
-          <td>2614328976</td>
-          <td>nicolligorria@gmail.com</td>
+          <td>Pan</td>
+          <td>5</td>
+          <td>$200</td>
           <td>
             <button class="btn btn-outline-success btn-sm btn-actualizar">Actualizar</button>
             <button class="btn btn-outline-danger btn-sm btn-borrar">Borrar</button>
@@ -35,29 +34,9 @@
         </tr>
         <tr>
           <th scope="row">2</th>
-          <td>Jose Muñoz</td>
-          <td>2614567898</td>
-          <td>MuñozJose32@gmail.com</td>
-          <td>
-            <button class="btn btn-outline-success btn-sm btn-actualizar">Actualizar</button>
-            <button class="btn btn-outline-danger btn-sm btn-borrar">Borrar</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Mateo Perez</td>
-          <td>2615475323</td>
-          <td>mateoPerez900@gmail.com</td>
-          <td>
-            <button class="btn btn-outline-success btn-sm btn-actualizar">Actualizar</button>
-            <button class="btn btn-outline-danger btn-sm btn-borrar">Borrar</button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">4</th>
-          <td>Carla Salavaguión</td>
-          <td>2615003292</td>
-          <td>carlitasalavaguion760@gmail.com</td>
+          <td>Leche</td>
+          <td>3</td>
+          <td>$150</td>
           <td>
             <button class="btn btn-outline-success btn-sm btn-actualizar">Actualizar</button>
             <button class="btn btn-outline-danger btn-sm btn-borrar">Borrar</button>
@@ -79,16 +58,16 @@
           <form>
             <input type="hidden" id="modoModal" value="actualizar">
             <div class="mb-3">
-              <label for="first-name" class="form-label">Nombre:</label>
-              <input type="text" class="form-control" id="first-name">
+              <label for="producto" class="form-label">Producto:</label>
+              <input type="text" class="form-control" id="producto">
             </div>
             <div class="mb-3">
-              <label for="last-name" class="form-label">Telefono:</label>
-              <input type="text" class="form-control" id="last-name">
+              <label for="cantidad" class="form-label">Cantidad:</label>
+              <input type="number" class="form-control" id="cantidad">
             </div>
             <div class="mb-3">
-              <label for="handle" class="form-label">Correo electronico:</label>
-              <input type="text" class="form-control" id="handle">
+              <label for="precio" class="form-label">Precio:</label>
+              <input type="text" class="form-control" id="precio">
             </div>
           </form>
         </div>
@@ -108,9 +87,9 @@
 
     document.getElementById("btnAgregar").addEventListener("click", () => {
       document.getElementById("modoModal").value = "agregar";
-      document.getElementById("first-name").value = "";
-      document.getElementById("last-name").value = "";
-      document.getElementById("handle").value = "";
+      document.getElementById("producto").value = "";
+      document.getElementById("cantidad").value = "";
+      document.getElementById("precio").value = "";
       modal.show();
     });
 
@@ -118,17 +97,17 @@
       if (e.target.classList.contains("btn-actualizar")) {
         filaSeleccionada = e.target.closest("tr");
         const celdas = filaSeleccionada.querySelectorAll("td");
-        document.getElementById("first-name").value = celdas[0].innerText;
-        document.getElementById("last-name").value = celdas[1].innerText;
-        document.getElementById("handle").value = celdas[2].innerText;
+        document.getElementById("producto").value = celdas[0].innerText;
+        document.getElementById("cantidad").value = celdas[1].innerText;
+        document.getElementById("precio").value = celdas[2].innerText;
         document.getElementById("modoModal").value = "actualizar";
         modal.show();
       }
 
       if (e.target.classList.contains("btn-borrar")) {
         const fila = e.target.closest("tr");
-        const nombre = fila.querySelector("td").innerText;
-        if (confirm(`¿Estás seguro de que querés borrar a ${nombre}?`)) {
+        const producto = fila.querySelector("td").innerText;
+        if (confirm(`¿Estás seguro de que querés borrar "${producto}"?`)) {
           fila.remove();
           actualizarNumeracion();
         }
@@ -136,23 +115,23 @@
     });
 
     document.getElementById("guardarCambios").addEventListener("click", function() {
-      const nombre = document.getElementById("first-name").value;
-      const apellido = document.getElementById("last-name").value;
-      const handle = document.getElementById("handle").value;
+      const producto = document.getElementById("producto").value;
+      const cantidad = document.getElementById("cantidad").value;
+      const precio = document.getElementById("precio").value;
       const modo = document.getElementById("modoModal").value;
 
       if (modo === "actualizar" && filaSeleccionada) {
         const celdas = filaSeleccionada.querySelectorAll("td");
-        celdas[0].innerText = nombre;
-        celdas[1].innerText = apellido;
-        celdas[2].innerText = handle;
+        celdas[0].innerText = producto;
+        celdas[1].innerText = cantidad;
+        celdas[2].innerText = precio;
       } else if (modo === "agregar") {
         const nuevaFila = document.createElement("tr");
         nuevaFila.innerHTML = `
           <th scope="row"></th>
-          <td>${nombre}</td>
-          <td>${apellido}</td>
-          <td>${handle}</td>
+          <td>${producto}</td>
+          <td>${cantidad}</td>
+          <td>${precio}</td>
           <td>
             <button class="btn btn-outline-success btn-sm btn-actualizar">Actualizar</button>
             <button class="btn btn-outline-danger btn-sm btn-borrar">Borrar</button>
@@ -174,3 +153,4 @@
   </script>
 </body>
 </html>
+
